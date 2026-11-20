@@ -1,166 +1,109 @@
-# Calculadora de Tributos
+<p align="center">
+  <img src="docs/img/banner.svg" alt="Calculadora de Tributos: calcule CBS, IBS e Imposto Seletivo" width="100%">
+</p>
 
-## Descrição do Projeto
+<p align="center">
+  <a href="https://github.com/ReceitaFederal/calculadora-rtc-regime-regular/tags"><img alt="versão" src="https://img.shields.io/github/v/tag/ReceitaFederal/calculadora-rtc-regime-regular?label=vers%C3%A3o&color=2563eb"></a>
+  <img alt="licença" src="https://img.shields.io/badge/licen%C3%A7a-MIT-16a34a">
+  <img alt="Java 25" src="https://img.shields.io/badge/Java-25-2563eb">
+  <img alt="Spring Boot 4" src="https://img.shields.io/badge/Spring%20Boot-4.1.2-16a34a">
+  <img alt="API REST" src="https://img.shields.io/badge/API-REST-2563eb">
+</p>
 
-API REST que realiza o cálculo da CBS, do IBS e do Imposto Seletivo (Reforma Tributária do Consumo — LC 214/2025) nas operações do regime geral, consulta as tabelas oficiais usadas no cálculo e gera e valida os grupos de tributação dos documentos fiscais eletrônicos.
+<h3 align="center">Calcule CBS, IBS e Imposto Seletivo<br>com as tabelas oficiais da Receita Federal</h3>
 
 ---
 
-## Público-Alvo
+## O que é
 
-- Empresas de tecnologia
-- Desenvolvedores
-- Contribuintes em geral
+A Calculadora de Tributos é uma API que faz as contas da Reforma Tributária do Consumo (LC 214/2025) no regime geral. Você envia os dados da operação e recebe os valores de CBS, IBS e Imposto Seletivo. Ela também consulta as tabelas oficiais usadas no cálculo e gera e valida os trechos de tributação dos documentos fiscais eletrônicos.
 
----
+É mantida pela Receita Federal do Brasil, com o SERPRO.
 
-## Funcionalidades
+## Por que usar
 
-Todos os caminhos começam com `http://localhost:8080/api/calculadora`. A lista completa, com esquemas e exemplos, está no Swagger (`http://localhost:8080/api/swagger-ui.html`).
-
-| Funcionalidade | Endpoint |
+| | |
 |---|---|
-| Cálculo de tributos (a operação inteira falha no primeiro erro) | `POST /regime-geral` |
-| Cálculo com observabilidade (erros por item, sem interromper os demais) | `POST /observabilidade/regime-geral` |
-| Descrição de um código de erro da observabilidade | `GET /observabilidade/erros?codigo=REG-011` |
-| Base de cálculo unificada da NF-e/NFC-e | `POST /base-calculo/base-calculo-unificada` |
-| Base de cálculo unificada da NFS-e | `POST /base-calculo/base-calculo-unificada-nfse` |
-| Geração do XML a partir do resultado do cálculo | `POST /xml/generate?tipo=nfe` |
-| Validação de XML (grupo ou nota) contra o XSD | `POST /xml/validate?tipo=nfe&subtipo=grupo` |
-| CST e classificações tributárias (cClassTrib) | `GET /dados-abertos/situacoes-tributarias/cbs-ibs`, `GET /dados-abertos/classificacoes-tributarias/...` |
-| Fundamentações legais | `GET /dados-abertos/fundamentacoes-legais` |
-| NCM e NBS | `GET /dados-abertos/ncm`, `GET /dados-abertos/nbs` |
-| Alíquotas de referência (União, UF e município) | `GET /dados-abertos/aliquota-uniao`, `/aliquota-uf`, `/aliquota-municipio` |
+| **Cálculo pronto** | CBS, IBS e Imposto Seletivo em uma chamada. |
+| **Resultado que fecha** | Os totais batem com a soma dos itens exibidos, como a autorização da nota exige. |
+| **Erros por item** | Em um modo à parte, um item com erro não impede o cálculo dos outros. |
+| **Tabelas oficiais** | CST, cClassTrib, NCM, NBS, alíquotas e fundamentações legais por consulta. |
+| **XML do documento fiscal** | Gera o grupo de tributação e valida contra o XSD (NF-e, NFC-e, CT-e e outros). |
+| **Documentação interativa** | Swagger com todos os campos e exemplos. |
 
-Exemplos de utilização da API estão em [docs/exemplos.md](docs/exemplos.md).
+## Antes de começar
 
----
+- **Java 25**. Confira com `java -version`.
+- **Git**, para baixar o projeto.
+- **Internet** na primeira execução: o Maven Wrapper (`mvnw`) baixa o Maven sozinho, sem instalação.
+- Windows, macOS ou Linux.
 
-## Requisitos
-
-### Requisitos do Sistema
-
-- **Java**: versão 25
-- **Maven**: não precisa ser instalado; o Maven Wrapper (`mvnw` / `mvnw.cmd`) baixa a versão necessária na primeira execução (requer internet)
-- **Git**: para clonar o repositório
-- **Sistema Operacional**: Windows, macOS ou Linux
-
-### Dependências Principais
-
-O projeto utiliza as seguintes tecnologias:
-
-- **Spring Boot 4.1.2**: Framework principal da aplicação web
-- **SQLite**: Banco de dados embarcado
-- **Flyway**: Migração e versionamento do banco de dados
-- **Springdoc OpenAPI 3.2.0**: Documentação interativa da API (especificação OpenAPI 3.1)
-
----
-
-## Instruções de Instalação
-
-### 1. Pré-requisitos
-
-Certifique-se de ter instalado o Java 25 ou superior e verifique as versões:
-
-```bash
-# Verificar versão do Java
-java -version
-```
-
-### 2. Clonar o Repositório
+## Instalação
 
 ```bash
 git clone https://github.com/ReceitaFederal/calculadora-rtc-regime-regular.git
 cd calculadora-rtc-regime-regular
 ```
 
-### 3. Gerar o Banco de Dados (obrigatório)
+**Passo obrigatório: gerar o banco de dados.** Sem ele, a aplicação não inicia.
 
-O perfil `offline` lê o banco `./calculadora/db/calculadora-pro.db`, definido por `application.db.filename` em `application-offline.yml`. O caminho é relativo à raiz do projeto e o banco é aberto em modo somente leitura.
-
-> **Atenção:** a aplicação só funciona se o banco estiver gerado. Sem ele, o perfil offline não inicia.
-
-Execute a partir da raiz do projeto.
-
-**Linux/macOS:**
+Linux/macOS:
 
 ```bash
 mkdir -p ./calculadora/db
 ./mvnw flyway:migrate -Dflyway.configFiles=./flyway/flyway-pro.conf --batch-mode --errors
 ```
 
-**Windows:**
+Windows:
 
 ```bat
 mkdir calculadora\db
 mvnw.cmd flyway:migrate -Dflyway.configFiles=flyway\flyway-pro.conf --batch-mode --errors
 ```
 
-Confirme que o arquivo foi criado com `ls -lah ./calculadora/db/calculadora-pro.db` (Linux/macOS) ou `dir calculadora\db\calculadora-pro.db` (Windows).
+## Como usar
 
-### 4. Compilar e Executar os Testes
-
-Os testes exigem o banco gerado no passo 3, pois a maioria são testes de integração com o perfil `testes`.
-
-Executar todos os testes com relatório de cobertura (JaCoCo):
-
-**Linux/macOS:**
-
-```bash
-./mvnw clean test jacoco:report
-```
-
-**Windows:**
-
-```bat
-mvnw.cmd clean test jacoco:report
-```
-
-O relatório de cobertura fica em `target/site/jacoco/index.html`.
-
-### 5. Executar a Aplicação com perfil Offline (spring-boot:run)
-
-**Linux/macOS:**
+Inicie a aplicação:
 
 ```bash
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=offline
 ```
 
-**Windows:**
+No Windows: `mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=offline"`.
 
-```bat
-mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=offline"
-```
+Ela fica em `http://localhost:8080/api`. A documentação interativa está em `http://localhost:8080/api/swagger-ui.html`.
 
-A aplicação estará disponível em `http://localhost:8080/api`.
+| Para | Chamada |
+|---|---|
+| Calcular os tributos | `POST /api/calculadora/regime-geral` |
+| Calcular com erros por item | `POST /api/calculadora/observabilidade/regime-geral` |
+| Gerar o XML a partir do cálculo | `POST /api/calculadora/xml/generate?tipo=nfe` |
+| Validar um XML | `POST /api/calculadora/xml/validate?tipo=nfe&subtipo=grupo` |
+| Consultar NCM | `GET /api/calculadora/dados-abertos/ncm` |
 
-### 6. Gerar o JAR e Executar com java -jar (perfil offline)
+A lista completa e exemplos de envio estão em [docs/exemplos.md](docs/exemplos.md).
 
-**Linux/macOS:**
+Para rodar os testes e ver a cobertura: `./mvnw clean test jacoco:report` (relatório em `target/site/jacoco/index.html`). Os testes também precisam do banco gerado.
 
-```bash
-./mvnw clean package
-java -Dspring.profiles.active=offline -jar target/api-regime-geral.jar
-```
+## Segurança e privacidade
 
-**Windows:**
+- A aplicação só lê o banco de dados. Ela nunca altera as tabelas oficiais.
+- A configuração de segurança deste projeto libera todas as rotas e serve para homologação e testes. Não exponha a API na internet sem revisar isso.
+- Para relatar uma falha de segurança, veja [SECURITY.md](SECURITY.md).
 
-```bat
-mvnw.cmd clean package
-java "-Dspring.profiles.active=offline" -jar target\api-regime-geral.jar
-```
+## Versões
 
-Execute o JAR a partir da raiz do projeto, para que `./calculadora/db` seja encontrado.
+| Versão | Novidades |
+|---|---|
+| 1.7.2 | O resultado do cálculo passa a fechar consigo mesmo: totais batem com a soma dos itens exibidos (evita a rejeição 1091). Podem surgir diferenças de centavos em relação à 1.7.0. |
+| 1.6.1 | Atualização do ROADMAP. |
 
----
+O histórico completo está no [CHANGELOG](CHANGELOG.md).
 
-## Referências
+## Para quem quer contribuir
 
-- [Code of conduct](https://www.contributor-covenant.org)
-- [MIT license](https://choosealicense.com/licenses/mit/)
-- [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/)
-- [Semantic Versioning](https://semver.org/lang/pt-BR/)
+Este repositório não aceita Pull Requests de fora. Sugestões e relatos de erro entram por Issues e Discussions. Veja o [guia de contribuição](CONTRIBUTING.md) e a [governança](GOVERNANCE.md).
 
 ## Licença
 
-Este projeto é distribuído sob a licença especificada no arquivo [LICENSE](LICENSE).
+[MIT](LICENSE)
