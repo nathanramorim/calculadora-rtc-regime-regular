@@ -41,7 +41,7 @@ A Calculadora de Tributos é uma API que faz as contas da Reforma Tributária do
 ## Instalação
 
 ```bash
-git clone https://github.com/ReceitaFederal/calculadora-rtc-regime-regular.git
+git clone https://github.com/nathanramorim/calculadora-rtc-regime-regular.git
 cd calculadora-rtc-regime-regular
 ```
 
