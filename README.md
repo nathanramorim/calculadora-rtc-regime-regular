@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ReceitaFederal/calculadora-rtc-regime-regular/tags"><img alt="versão" src="https://img.shields.io/github/v/tag/ReceitaFederal/calculadora-rtc-regime-regular?label=vers%C3%A3o&color=2563eb"></a>
+  <a href="https://github.com/nathanramorim/calculadora-rtc-regime-regular/tags"><img alt="versão" src="https://img.shields.io/github/v/tag/nathanramorim/calculadora-rtc-regime-regular?label=vers%C3%A3o&color=2563eb"></a>
   <img alt="licença" src="https://img.shields.io/badge/licen%C3%A7a-MIT-16a34a">
   <img alt="Java 25" src="https://img.shields.io/badge/Java-25-2563eb">
   <img alt="Spring Boot 4" src="https://img.shields.io/badge/Spring%20Boot-4.1.2-16a34a">
